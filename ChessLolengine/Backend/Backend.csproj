@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B205E1DB-B53A-4882-8811-E5EEC6291619}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Backend</RootNamespace>
+    <AssemblyName>Backend</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=2021.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2021.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command\CastlingCommand.cs" />
+    <Compile Include="Command\CompensableConversation.cs" />
+    <Compile Include="Command\EnPassantCommand.cs" />
+    <Compile Include="Command\HistoryViewConversation.cs" />
+    <Compile Include="Command\ICompensableCommand.cs" />
+    <Compile Include="Command\ICompensableConversation.cs" />
+    <Compile Include="Command\MoveCommand.cs" />
+    <Compile Include="Command\PromoteCommand.cs" />
+    <Compile Include="Core\Game.cs" />
+    <Compile Include="Core\Player.cs" />
+    <Compile Include="Core\PlayerControler.cs" />
+    <Compile Include="Engine\IEngine.cs" />
+    <Compile Include="Engine\RealEngine.cs" />
+    <Compile Include="Engine\RuleManager\BishopRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\KingRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\KnightRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\PawnRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\QueenRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\RookRuleGroup.cs" />
+    <Compile Include="Engine\RuleManager\RuleGroup.cs" />
+    <Compile Include="Engine\Rules\BishopMovementRule.cs" />
+    <Compile Include="Engine\Rules\CanOnlyTakeEnnemyRule.cs" />
+    <Compile Include="Engine\Rules\CanOnlyTakeEnnemyRuleKing.cs" />
+    <Compile Include="Engine\Rules\CastlingRule.cs" />
+    <Compile Include="Engine\Rules\IRule.cs" />
+    <Compile Include="Engine\Rules\KingMovementRule.cs" />
+    <Compile Include="Engine\Rules\KnightMovementRule.cs" />
+    <Compile Include="Engine\Rules\PawnMovementRule.cs" />
+    <Compile Include="Engine\Rules\QueenMovementRule.cs" />
+    <Compile Include="Engine\Rules\RookMovementRule.cs" />
+    <Compile Include="Engine\Rules\WillNotMakeCHeck.cs" />
+    <Compile Include="Engine\States\CheckState.cs" />
+    <Compile Include="Engine\States\IState.cs" />
+    <Compile Include="Engine\States\PatState.cs" />
+    <Compile Include="IA\UciProcessController.cs" />
+    <Compile Include="IO\BinaryLoader.cs" />
+    <Compile Include="IO\BinarySaver.cs" />
+    <Compile Include="IO\ILoader.cs" />
+    <Compile Include="IO\ISaver.cs" />
+    <Compile Include="Lolengine\LolengineController.cs" />
+    <Compile Include="Lolengine\LolengineLogic.cs" />
+    <Compile Include="Model\Board.cs" />
+    <Compile Include="Model\Container.cs" />
+    <Compile Include="Model\Coordinate.cs" />
+    <Compile Include="Model\Move.cs" />
+    <Compile Include="Model\Pieces\Bishop.cs" />
+    <Compile Include="Model\Pieces\King.cs" />
+    <Compile Include="Model\Pieces\Knight.cs" />
+    <Compile Include="Model\Pieces\Pawn.cs" />
+    <Compile Include="Model\Pieces\Piece.cs" />
+    <Compile Include="Model\Pieces\Queen.cs" />
+    <Compile Include="Model\Pieces\Rook.cs" />
+    <Compile Include="Model\Square.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\FenTranslator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
