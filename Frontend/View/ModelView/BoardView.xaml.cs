@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using Backend.Engine;
 using Backend.Model;
 using Frontend.Game;
@@ -20,22 +19,6 @@ namespace Frontend.View.ModelView
     /// </summary>
     public partial class BoardView
     {
-        #region Fields
-
-        private SquareView _lastChangedSquareView;
-        private List<SquareView> _possibleMoves = new List<SquareView>();
-        private List<SquareView> _lastMove = new List<SquareView>();
-        private SquareView _clickedSquare;
-        private PieceView _selectedPiece;
-        private bool _mouseDown;
-        private bool _selected;
-        private Point _mouseDownPoint;
-        private bool _initDragAndDropOnMouseMove;
-        private bool _hasBeginDragAndDrop;
-        private Container _container;
-
-        #endregion
-
         #region Constructor
 
         public BoardView(Container container)
@@ -50,14 +33,14 @@ namespace Frontend.View.ModelView
                 Grid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            Grid.RowDefinitions.Add(new RowDefinition {Height = GridLength.Auto});
-            Grid.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
+            Grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             /* Ajout des cases */
             foreach (var square in Board.Squares)
             {
                 var squareView = new SquareView(square)
                 {
-                    UcPieceView = {LayoutTransform = LayoutTransform},
+                    UcPieceView = { LayoutTransform = LayoutTransform },
                     LayoutTransform = LayoutTransform
                 };
                 SquareViews.Add(squareView);
@@ -69,7 +52,7 @@ namespace Frontend.View.ModelView
             {
                 var label = new Label
                 {
-                    Content = (char) ('A' + i),
+                    Content = (char)('A' + i),
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
                 Grid.SetColumn(label, i);
@@ -124,6 +107,18 @@ namespace Frontend.View.ModelView
         public List<BoardViewPlayerController> BoardViewPlayerControllers { get; set; } =
             new List<BoardViewPlayerController>();
 
+        private SquareView _lastChangedSquareView;
+        private List<SquareView> _possibleMoves = new List<SquareView>();
+        private List<SquareView> _lastMove = new List<SquareView>();
+        private SquareView _clickedSquare;
+        private PieceView _selectedPiece;
+        private bool _mouseDown;
+        private bool _selected;
+        private Point _mouseDownPoint;
+        private bool _initDragAndDropOnMouseMove;
+        private bool _hasBeginDragAndDrop;
+        private Container _container;
+
         #endregion
 
         #region EventHandling
@@ -131,18 +126,22 @@ namespace Frontend.View.ModelView
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            if (e.ChangedButton != MouseButton.Left) return;
+
+            if (e.ChangedButton != MouseButton.Left) 
+                return;
+
             _mouseDown = true;
             _mouseDownPoint = e.GetPosition(Grid);
             _clickedSquare = SquareAt(e.GetPosition(Grid));
 
-            if (_clickedSquare == null) return;
+            if (_clickedSquare == null) 
+                return;
 
-            if (_selected && _possibleMoves.Contains(_clickedSquare)) return; 
+            if (_selected && _possibleMoves.Contains(_clickedSquare)) 
+                return;
 
             ResetBoardColor();
             _selectedPiece = _clickedSquare.PieceView;
-
 
             //--Verified--//
             //Concerned controllers to get the possible moves
@@ -161,9 +160,9 @@ namespace Frontend.View.ModelView
                         .First(x => Grid.GetRow(x) == square.Y && Grid.GetColumn(x) == square.X);
 
                 squareView.SetResourceReference(BackgroundProperty,
-                    (square.X + square.Y)%2 == 0
-                        ? "CleanWindowCloseButtonBackgroundBrush"
-                        : "CleanWindowCloseButtonPressedBackgroundBrush");
+                    (square.X + square.Y) % 2 == 0
+                        ? "MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver"
+                        : "MahApps.Brushes.Button.CleanWindow.Close.Background.Pressed");
 
                 _possibleMoves.Add(squareView);
             }
@@ -172,28 +171,36 @@ namespace Frontend.View.ModelView
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-            if (e.ChangedButton != MouseButton.Left) return;
+
+            if (e.ChangedButton != MouseButton.Left) 
+                return;
+
             _mouseDown = false;
             _initDragAndDropOnMouseMove = false;
 
             var concernedControllers = ConcernedControllers();
 
-            if (concernedControllers.Count == 0) return;
+            if (concernedControllers.Count == 0) 
+                return;
 
-            Move move = null;
+            Move move;
             var squareView = SquareAt(e.GetPosition(Grid));
             //TODO Put all the fields in the corresponding state
+
             if (squareView == null)
             {
-                if (_selectedPiece == null) return;
+                if (_selectedPiece == null) 
+                    return;
+
                 Canvas.Children.Remove(_selectedPiece);
                 _clickedSquare.Square.Piece = _selectedPiece.Piece;
                 _selectedPiece = null;
                 _selected = false;
+
                 return;
             }
-            var clickedSquareView = SquareAt(_mouseDownPoint);
 
+            var clickedSquareView = SquareAt(_mouseDownPoint);
             var select = Equals(squareView.Square.Coordinate, clickedSquareView?.Square?.Coordinate); //Same square
 
             if (select)
@@ -264,8 +271,6 @@ namespace Frontend.View.ModelView
             }
         }
 
-
-
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -281,8 +286,12 @@ namespace Frontend.View.ModelView
                 return;
             }
             //Use the threshold too
-            if (!_mouseDown) return;
-            if (_selectedPiece == null) return;
+            if (!_mouseDown) 
+                return;
+
+            if (_selectedPiece == null) 
+                return;
+
             if (_initDragAndDropOnMouseMove && (_mouseDownPoint - e.GetPosition(Grid)).Length > 5)
             {
                 Console.WriteLine("Init drag and drop");
@@ -301,8 +310,8 @@ namespace Frontend.View.ModelView
                 _hasBeginDragAndDrop = true;
             }
 
-            Canvas.SetTop(_selectedPiece, e.GetPosition(this).Y - _selectedPiece.ActualHeight/2);
-            Canvas.SetLeft(_selectedPiece, e.GetPosition(this).X - _selectedPiece.ActualWidth/2);
+            Canvas.SetTop(_selectedPiece, e.GetPosition(this).Y - _selectedPiece.ActualHeight / 2);
+            Canvas.SetLeft(_selectedPiece, e.GetPosition(this).X - _selectedPiece.ActualWidth / 2);
         }
 
         //TODO add on mouse leave
@@ -314,16 +323,16 @@ namespace Frontend.View.ModelView
         {
             _possibleMoves.ForEach(ResetSquareViewColor);
             _lastMove.ForEach(x => x.SetResourceReference(BackgroundProperty,
-                (x.Square.X + x.Square.Y)%2 == 0
-                    ? "CheckBoxBrush"
-                    : "CheckBoxMouseOverBrush"));
+                (x.Square.X + x.Square.Y) % 2 == 0
+                    ? "MahApps.Brushes.CheckBox"
+                    : "MahApps.Brushes.CheckBox.MouseOver"));
             _possibleMoves.Clear();
         }
 
         private static void ResetSquareViewColor(SquareView squareView)
         {
             squareView.SetResourceReference(BackgroundProperty,
-                (squareView.Square.X + squareView.Square.Y)%2 == 0 ? "MahApps.Brushes.Accent" : "MahApps.Brushes.Accent4");
+                (squareView.Square.X + squareView.Square.Y) % 2 == 0 ? "MahApps.Brushes.Accent" : "MahApps.Brushes.Accent4");
         }
 
         public void GameStateChanged(BoardState state)
@@ -342,37 +351,37 @@ namespace Frontend.View.ModelView
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
-                    squareView.SetResourceReference(BackgroundProperty, "ValidationBrush5");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Validation5");
                     break;
                 case BoardState.BlackCheck:
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
-                    squareView.SetResourceReference(BackgroundProperty, "ValidationBrush5");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Validation5");
                     break;
                 case BoardState.BlackCheckMate:
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
-                    squareView.SetResourceReference(BackgroundProperty, "TextBrush");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Text");
                     break;
                 case BoardState.WhiteCheckMate:
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
-                    squareView.SetResourceReference(BackgroundProperty, "TextBrush");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Text");
                     break;
                 case BoardState.BlackPat:
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
-                    squareView.SetResourceReference(BackgroundProperty, "WhiteColorBrush");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.SystemControlForegroundChromeWhite");
                     break;
                 case BoardState.WhitePat:
                     squareView =
                         SquareViews.First(
                             x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
-                    squareView.SetResourceReference(BackgroundProperty, "WhiteColorBrush");
+                    squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.SystemControlForegroundChromeWhite");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -433,18 +442,5 @@ namespace Frontend.View.ModelView
                 BoardViewPlayerControllers.FindAll(x => (x.Player.Color == (_selectedPiece?.Piece.Color) && x.IsPlayable));
 
         #endregion
-
-        #region Misc
-        public static readonly DependencyProperty SetTextProperty = DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(SquareView));
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            base.OnRenderSizeChanged(sizeInfo);
-            //Pour rendre le plateau toujours carré
-            var minNewSizeOfParentUserControl = Math.Min(sizeInfo.NewSize.Height, sizeInfo.NewSize.Width);
-            Grid.Width = minNewSizeOfParentUserControl;
-            Grid.Height = minNewSizeOfParentUserControl;
-        }
-        #endregion
     }
 }
- 

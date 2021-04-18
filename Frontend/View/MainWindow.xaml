@@ -28,9 +28,9 @@
                 Name="Flyout"
                 Header="Options"
                 MaxWidth="200"
-                Position="Right">
+                Position="Left">
                 <StackPanel Margin="10" Orientation="Vertical">
-                    <GroupBox Header="Options de la partie">
+                    <GroupBox Header="Options">
                         <StackPanel />
                     </GroupBox>
                 </StackPanel>

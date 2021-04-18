@@ -9,10 +9,10 @@
 
     <StackPanel Orientation="Vertical" Margin="5 0 5 0">
 
-        <controls:Tile Title="Sauvegarder la partie"
+        <controls:Tile Title="Safe the party"
                        Margin="3"
                        Name="TileSave"
-                       Style="{StaticResource LargeTileStyle}"
+                       Style="{StaticResource SmallTileStyle}"
                        controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.Text}"
                        HorizontalTitleAlignment="Center"
                        Click="TileSave_OnClick">
@@ -20,10 +20,10 @@
                                       Height="40"
                                       Kind="Save" />
         </controls:Tile>
-        <controls:Tile Title="Quitter la partie"
+        <controls:Tile Title="Quit"
                        Margin="3"
                        Name="TileQuit"
-                       Style="{StaticResource LargeTileStyle}"
+                       Style="{StaticResource SmallTileStyle}"
                        controls:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.Text}"
                        HorizontalTitleAlignment="Center"
                        Click="TileQuit_OnClick">

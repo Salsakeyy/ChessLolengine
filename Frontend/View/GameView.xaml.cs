@@ -91,9 +91,10 @@ namespace Frontend.View
 
             var result =
                 await
-                    _mainWindow.ShowMessageAsync("Quit the party",
-                        "Voulez-vous vraiment quitter la partie ? Si votre partie n'est pas sauvegardée, elle sera perdue...",
+                    _mainWindow.ShowMessageAsync("Quit the game",
+                        "Are you sure you want to quit? The game will be lost and you wont be able to continue this party of chess.",
                         MessageDialogStyle.AffirmativeAndNegative);
+
             if (result == MessageDialogResult.Affirmative)
             {
                 _mainWindow.Flyout.Content = null;

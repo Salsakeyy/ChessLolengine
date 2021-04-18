@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <Grid>
-        <ListView Name="ListViewHistory" MouseLeave="ListViewHistory_OnMouseLeave"
-                  MouseEnter="ListViewHistory_OnMouseEnter" AlternationCount="2">
+        <ListView Name="ListViewHistory" 
+                  MouseLeave="ListViewHistory_OnMouseLeave"
+                  MouseEnter="ListViewHistory_OnMouseEnter" 
+                  AlternationCount="2">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn Header="Moves" />
@@ -18,7 +20,7 @@
                     <EventSetter Event="MouseDoubleClick" Handler="ItemListDoubleClick" />
                     <Style.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="{DynamicResource AccentBaseColorBrush}" />
+                            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.AccentBase}" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
