@@ -12,16 +12,16 @@ namespace Backend.Engine.Rules
         public bool IsMoveValid(Move move, Board board)
         {
             IState checkState = new CheckState();
-            Board tempBoard = new Board(board);
+            var tempBoard = new Board(board);
 
-            bool castling = new CastlingRule().IsMoveValid(move, board) && (move.PieceType == Type.King) &&
-                            (tempBoard.PieceAt(move.TargetCoordinate)?.Type == Type.Rook) &&
-                            (move.PieceColor == tempBoard.PieceAt(move.TargetCoordinate)?.Color);
+            var castling = new CastlingRule().IsMoveValid(move, board) && move.PieceType == Type.King &&
+                           tempBoard.PieceAt(move.TargetCoordinate)?.Type == Type.Rook &&
+                           move.PieceColor == tempBoard.PieceAt(move.TargetCoordinate)?.Color;
 
             if (!castling)
                 if (move.PieceColor == tempBoard.PieceAt(move.TargetCoordinate)?.Color)
                     return true;
-            ICompensableCommand command = castling
+            var command = castling
                 ? new CastlingCommand(move, tempBoard)
                 : new MoveCommand(move, tempBoard) as ICompensableCommand;
 

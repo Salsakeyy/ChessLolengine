@@ -52,70 +52,76 @@ namespace Backend.Engine
         public bool DoMove(Move move)
         {
             //No reason to move if it's the same square
-            if (move.StartCoordinate == move.TargetCoordinate) return false;
+            if (move.StartCoordinate == move.TargetCoordinate) 
+                return false;
 
-            Piece piece = Board.PieceAt(move.StartCoordinate);
-            Piece targetPiece = Board.PieceAt(move.TargetCoordinate);
+            var piece = Board.PieceAt(move.StartCoordinate);
+            var targetPiece = Board.PieceAt(move.TargetCoordinate);
 
-            //TODO gérer exception
-            if (_ruleGroups.Handle(move, Board))
+            //TODO generate exception
+            if (!_ruleGroups.Handle(move, Board)) 
+                return false;
+
+            ICompensableCommand command;
+            switch (move.PieceType)
             {
-                ICompensableCommand command;
-                if ((move.PieceType == Type.King) &&
-                    (((targetPiece?.Type == Type.Rook) && (move.PieceColor == targetPiece.Color))
-                     || (Math.Abs(move.TargetCoordinate.X - move.StartCoordinate.X) == 2)))
+                case Type.King when targetPiece?.Type == Type.Rook && move.PieceColor == targetPiece.Color
+                                    || Math.Abs(move.TargetCoordinate.X - move.StartCoordinate.X) == 2:
                     command = new CastlingCommand(move, Board);
-                else if ((move.PieceType == Type.Pawn) && (targetPiece == null) &&
-                         (move.StartCoordinate.X != move.TargetCoordinate.X))
+                    break;
+                case Type.Pawn when targetPiece == null && move.StartCoordinate.X != move.TargetCoordinate.X:
                     command = new EnPassantCommand(move, Board);
-                else if ((move.PieceType == Type.Pawn) &&
-                         (move.TargetCoordinate.Y == (move.PieceColor == Color.White ? 0 : 7)))
+                    break;
+                case Type.Pawn when move.TargetCoordinate.Y == (move.PieceColor == Color.White ? 0 : 7):
                     command = new PromoteCommand(move, Board);
-                else
+                    break;
+                default:
                     command = new MoveCommand(move, Board);
-
-                //En passant
-                if (move.PieceColor == Color.White)
-                {
-                    if (_enPassantPawnWhite != null)
-                    {
-                        _enPassantPawnWhite.EnPassant = false;
-                        _enPassantPawnWhite = null;
-                    }
-                }
-                else
-                {
-                    if (_enPassantPawnBlack != null)
-                    {
-                        _enPassantPawnBlack.EnPassant = false;
-                        _enPassantPawnBlack = null;
-                    }
-                }
-                if ((move.PieceType == Type.Pawn) && (Math.Abs(move.StartCoordinate.Y - move.TargetCoordinate.Y) == 2))
-                    if (move.PieceColor == Color.White)
-                    {
-                        _enPassantPawnWhite = (Pawn) piece;
-                        _enPassantPawnWhite.EnPassant = true;
-                    }
-                    else
-                    {
-                        _enPassantPawnBlack = (Pawn) piece;
-                        _enPassantPawnBlack.EnPassant = true;
-                    }
-
-                //Number of moves since last capture
-                if (Board.PieceAt(move.TargetCoordinate) == null)
-                    _container.HalfMoveSinceLastCapture++;
-                else
-                    _container.HalfMoveSinceLastCapture = 0;
-
-                _conversation.Execute(command);
-                _moves.Add(command);
-
-                return true;
+                    break;
             }
 
-            return false;
+            //En passant
+            if (move.PieceColor == Color.White)
+            {
+                if (_enPassantPawnWhite != null)
+                {
+                    _enPassantPawnWhite.EnPassant = false;
+                    _enPassantPawnWhite = null;
+                }
+            }
+            else
+            {
+                if (_enPassantPawnBlack != null)
+                {
+                    _enPassantPawnBlack.EnPassant = false;
+                    _enPassantPawnBlack = null;
+                }
+            }
+
+            if (move.PieceType == Type.Pawn && Math.Abs(move.StartCoordinate.Y - move.TargetCoordinate.Y) == 2)
+            {
+                if (move.PieceColor == Color.White)
+                {
+                    _enPassantPawnWhite = (Pawn) piece;
+                    _enPassantPawnWhite.EnPassant = true;
+                }
+                else
+                {
+                    _enPassantPawnBlack = (Pawn) piece;
+                    _enPassantPawnBlack.EnPassant = true;
+                }
+            }
+
+            //Number of moves since last capture
+            if (Board.PieceAt(move.TargetCoordinate) == null)
+                _container.HalfMoveSinceLastCapture++;
+            else
+                _container.HalfMoveSinceLastCapture = 0;
+
+            _conversation.Execute(command);
+            _moves.Add(command);
+
+            return true;
         }
 
 
@@ -125,11 +131,11 @@ namespace Backend.Engine
             IState patState = new PatState();
 
 
-            Color color = _moves.Count == 0 ? Color.White : _moves[_moves.Count - 1].PieceColor;
+            var color = _moves.Count == 0 ? Color.White : _moves[_moves.Count - 1].PieceColor;
 
-            bool check = checkState.IsInState(Board, color == Color.White ? Color.Black : Color.White);
+            var check = checkState.IsInState(Board, color == Color.White ? Color.Black : Color.White);
 
-            bool pat = patState.IsInState(Board, color == Color.White ? Color.Black : Color.White);
+            var pat = patState.IsInState(Board, color == Color.White ? Color.Black : Color.White);
 
             if (pat && check)
                 return color == Color.Black ? BoardState.WhiteCheckMate : BoardState.BlackCheckMate;
@@ -152,15 +158,15 @@ namespace Backend.Engine
         /// <returns>True if anything has been done</returns>
         public Move Undo()
         {
-            ICompensableCommand command = _conversation.Undo();
+            var command = _conversation.Undo();
             if (command == null) return null;
 
             if (_container.HalfMoveSinceLastCapture != 0)
                 _container.HalfMoveSinceLastCapture--;
             else
             {
-                int count = 0;
-                for (int i = _moves.Count - 1; i > 0; i--)
+                var count = 0;
+                for (var i = _moves.Count - 1; i > 0; i--)
                     if (!_moves[i].TakePiece)
                         count++;
                     else
@@ -178,7 +184,7 @@ namespace Backend.Engine
         /// <returns>True if anything has been done</returns>
         public Move Redo()
         {
-            ICompensableCommand command = _conversation.Redo();
+            var command = _conversation.Redo();
             if (command == null) return null;
 
             //Number of moves since last capture

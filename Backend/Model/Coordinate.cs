@@ -54,7 +54,7 @@ namespace Backend.Model
             Y = y;
         }
 
-        public static bool operator ==(Coordinate a, Coordinate b) => (a.X == b.X) && (a.Y == b.Y);
+        public static bool operator ==(Coordinate a, Coordinate b) => a.X == b.X && a.Y == b.Y;
 
         public static bool operator !=(Coordinate a, Coordinate b) => !(a == b);
 

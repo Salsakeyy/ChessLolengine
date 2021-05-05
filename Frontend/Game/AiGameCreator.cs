@@ -9,7 +9,7 @@ namespace Frontend.Game
 {
     public class AiGameCreator : GameCreator
     {
-        public override Mode Mode => Mode.AI;
+        public override Mode Mode => Mode.Ai;
 
         public override Backend.Core.Game CreateGame(Container container, BoardView boardView, Color color, GameCreatorParameters parameters)
         {

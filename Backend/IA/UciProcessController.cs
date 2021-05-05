@@ -13,12 +13,12 @@ namespace Backend.IA
     {
         private Container _container;
         private Process _uciProcess;
-        private string search;
+        private string _search;
 
         public UciProcessController(Container container)
         {
             _container = container;
-            search = "go movetime 1000";
+            _search = "go movetime 1000";
             _uciProcess = new Process
             {
                 StartInfo =
@@ -34,8 +34,7 @@ namespace Backend.IA
             _uciProcess.Start();
             _uciProcess.StandardInput.WriteLine("uci");
 
-
-            string output = "";
+            var output = "";
             while (output != "uciok")
             {
                 output = _uciProcess.StandardOutput.ReadLine();
@@ -49,7 +48,7 @@ namespace Backend.IA
         public UciProcessController(Container container, string searchType, int skillLevel, int searchValue)
         {
             _container = container;
-            search = "go " + searchType + " " + searchValue;
+            _search = "go " + searchType + " " + searchValue;
 
             _uciProcess = new Process
             {
@@ -67,7 +66,7 @@ namespace Backend.IA
             _uciProcess.StandardInput.WriteLine("uci");
 
 
-            string output = "";
+            var output = "";
             while (output != "uciok")
             {
                 output = _uciProcess.StandardOutput.ReadLine();
@@ -90,11 +89,11 @@ namespace Backend.IA
         {
             Console.WriteLine(FenTranslator.FenNotation(_container));
             await _uciProcess.StandardInput.WriteLineAsync("position fen " + FenTranslator.FenNotation(_container));
-            await _uciProcess.StandardInput.WriteLineAsync(search);
+            await _uciProcess.StandardInput.WriteLineAsync(_search);
 
-            string input = new string(' ', 1);
+            var input = new string(' ', 1);
 
-            while ((input == null) || !input.Contains("bestmove"))
+            while (input == null || !input.Contains("bestmove"))
             {
                 input = await _uciProcess.StandardOutput.ReadLineAsync();
                 if (input != null)
@@ -103,10 +102,10 @@ namespace Backend.IA
 
             if (!input.Contains("(none)"))
             {
-                Coordinate startCoordinate = new Coordinate(input[9] - 'a', 7 - (input[10] - '1'));
-                Coordinate targCoordinate = new Coordinate(input[11] - 'a', 7 - (input[12] - '1'));
+                var startCoordinate = new Coordinate(input[9] - 'a', 7 - (input[10] - '1'));
+                var targCoordinate = new Coordinate(input[11] - 'a', 7 - (input[12] - '1'));
 
-                if ((input.Length > 13) && (input[13] != ' '))
+                if (input.Length > 13 && input[13] != ' ')
                     switch (input[13])
                     {
                         case 'q':

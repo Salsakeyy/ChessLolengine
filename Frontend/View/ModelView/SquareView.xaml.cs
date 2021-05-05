@@ -16,13 +16,11 @@ namespace Frontend.View.ModelView
             if (square.Piece != null)
                 PieceView = new PieceView(square.Piece);
 
-
             SetResourceReference(BackgroundProperty,
                 (square.X + square.Y)%2 == 0 ? "MahApps.Brushes.Accent" : "MahApps.Brushes.Accent4");
 
             Grid.SetColumn(this, square.X);
             Grid.SetRow(this, square.Y);
-            
         }
 
         public PieceView PieceView

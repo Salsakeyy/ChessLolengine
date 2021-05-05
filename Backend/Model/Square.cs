@@ -43,7 +43,7 @@ namespace Backend.Model
         /// </value>
         public Piece Piece
         {
-            get { return _piece; }
+            get => _piece;
             set
             {
                 _piece = value;

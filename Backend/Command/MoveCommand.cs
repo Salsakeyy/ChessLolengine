@@ -64,9 +64,9 @@ namespace Backend.Command
                 _piece.Square = _targetSquare;
                 _targetSquare.Piece = _piece;
             }
-            //There is a taken piece
             else
             {
+                //There is a taken piece
                 _removedPiece = _targetSquare.Piece;
                 _targetSquare.Piece = null;
                 _piece.Square.Piece = null;
@@ -97,6 +97,6 @@ namespace Backend.Command
 
         public ICompensableCommand Copy(Board board) => new MoveCommand(this, board);
 
-        public override string ToString() => _piece + " de " + Move.StartCoordinate + " vers " + Move.TargetCoordinate;
+        public override string ToString() => _piece + " from " + Move.StartCoordinate + " to " + Move.TargetCoordinate;
     }
 }

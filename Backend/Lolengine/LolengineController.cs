@@ -19,15 +19,15 @@ namespace Backend.Lolengine
         {
             var coordinates = LolengineLogic.GetBestMoves(_container);
 
-            if(coordinates.Count == 2)
-            {
-                var startCoordinate = coordinates[0];
-                var targCoordinate = coordinates[1];
+            if (coordinates.Count != 2) 
+                return;
 
-                Move(new Move(_container.Board.PieceAt(startCoordinate), _container.Board.SquareAt(targCoordinate)));
+            var startCoordinate = coordinates[0];
+            var targetCoordinate = coordinates[1];
+            var test = new Move(_container.Board.PieceAt(startCoordinate), _container.Board.SquareAt(targetCoordinate));
+            Move(test);
    
-                //Move(new Move(_container.Board.SquareAt(startCoordinate), _container.Board.SquareAt(targCoordinate), Type.Pawn, Player.Color, Type.Knight));           
-            }
+            //Move(new Move(_container.Board.SquareAt(startCoordinate), _container.Board.SquareAt(targCoordinate), Type.Pawn, Player.Color, Type.Knight));           
         }
 
         public override void Move(Move move)

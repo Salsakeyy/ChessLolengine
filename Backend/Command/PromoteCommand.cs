@@ -35,7 +35,7 @@ namespace Backend.Command
         {
             _moveCommand.Execute();
 
-            Square square = _board.SquareAt(Move.TargetCoordinate);
+            var square = _board.SquareAt(Move.TargetCoordinate);
             Piece piece;
             switch (Move.PromotePieceType)
             {

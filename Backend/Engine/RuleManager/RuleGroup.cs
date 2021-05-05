@@ -31,7 +31,7 @@ namespace Backend.Engine.RuleManager
 
         public List<Square> PossibleMoves(Piece piece)
         {
-            List<Square> result = new List<Square>();
+            var result = new List<Square>();
             if (piece.Type == Type)
             {
                 result = result.Concat(Rules.First().PossibleMoves(piece)).ToList();

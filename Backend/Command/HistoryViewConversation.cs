@@ -26,7 +26,7 @@ namespace Backend.Command
         {
             if (_undoCommands.Count == 0) return null;
 
-            ICompensableCommand command = _undoCommands.Pop();
+            var command = _undoCommands.Pop();
             command.Compensate();
             _redoCommands.Push(command);
 
@@ -41,7 +41,7 @@ namespace Backend.Command
         {
             if (_redoCommands.Count == 0) return null;
 
-            ICompensableCommand command = _redoCommands.Pop();
+            var command = _redoCommands.Pop();
             command.Execute();
             _undoCommands.Push(command);
 

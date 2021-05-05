@@ -16,7 +16,7 @@ namespace Backend.Command
         {
             Move = move;
 
-            bool isLeftCastling = move.TargetCoordinate.X < move.StartCoordinate.X;
+            var isLeftCastling = move.TargetCoordinate.X < move.StartCoordinate.X;
 
             _kingCommand =
                 new MoveCommand(

@@ -147,7 +147,7 @@ namespace Frontend.View.ModelView
             //Concerned controllers to get the possible moves
             var concernedControllers =
                 BoardViewPlayerControllers.FindAll(
-                    x => (x.Player.Color == (_selectedPiece?.Piece.Color) && x.IsPlayable));
+                    x => x.Player.Color == _selectedPiece?.Piece.Color && x.IsPlayable);
 
             if (concernedControllers.Count == 0) return;
             _initDragAndDropOnMouseMove = true;
@@ -227,8 +227,8 @@ namespace Frontend.View.ModelView
 
                     _selected = false;
                     ResetBoardColor();
-                    if ((_selectedPiece.Piece.Type == Type.Pawn) &&
-                    (squareView.Square.Y == (_selectedPiece.Piece.Color == Color.White ? 0 : 7)))
+                    if (_selectedPiece.Piece.Type == Type.Pawn &&
+                    squareView.Square.Y == (_selectedPiece.Piece.Color == Color.White ? 0 : 7))
                     {
                         var promoteDialog = new PieceTypeSelectionWindow(_selectedPiece.Piece.Color);
                         promoteDialog.ShowDialog();
@@ -253,8 +253,8 @@ namespace Frontend.View.ModelView
                 Canvas.Children.Remove(_selectedPiece);
                 ResetBoardColor();
 
-                if ((_selectedPiece.Piece.Type == Type.Pawn) &&
-                    (squareView.Square.Y == (_selectedPiece.Piece.Color == Color.White ? 0 : 7)))
+                if (_selectedPiece.Piece.Type == Type.Pawn &&
+                    squareView.Square.Y == (_selectedPiece.Piece.Color == Color.White ? 0 : 7))
                 {
                     var promoteDialog = new PieceTypeSelectionWindow(_selectedPiece.Piece.Color);
                     promoteDialog.ShowDialog();
@@ -350,37 +350,37 @@ namespace Frontend.View.ModelView
                 case BoardState.WhiteCheck:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.White);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Validation5");
                     break;
                 case BoardState.BlackCheck:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.Black);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Validation5");
                     break;
                 case BoardState.BlackCheckMate:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.Black);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Text");
                     break;
                 case BoardState.WhiteCheckMate:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.White);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.Text");
                     break;
                 case BoardState.BlackPat:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.Black));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.Black);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.SystemControlForegroundChromeWhite");
                     break;
                 case BoardState.WhitePat:
                     squareView =
                         SquareViews.First(
-                            x => (x.Square?.Piece?.Type == Type.King) && (x.Square?.Piece?.Color == Color.White));
+                            x => x.Square?.Piece?.Type == Type.King && x.Square?.Piece?.Color == Color.White);
                     squareView.SetResourceReference(BackgroundProperty, "MahApps.Brushes.SystemControlForegroundChromeWhite");
                     break;
                 default:
@@ -429,7 +429,7 @@ namespace Frontend.View.ModelView
 
             var clickedControl = Grid.Children
                 .OfType<UIElement>()
-                .First(x => (Grid.GetRow(x) == row) && (Grid.GetColumn(x) == col));
+                .First(x => Grid.GetRow(x) == row && Grid.GetColumn(x) == col);
 
             return clickedControl as SquareView;
         }
@@ -439,7 +439,7 @@ namespace Frontend.View.ModelView
                 .FirstOrDefault(e => Grid.GetColumn(e) == coordinate.X && Grid.GetRow(e) == coordinate.Y) as SquareView;
 
         private List<BoardViewPlayerController> ConcernedControllers() =>
-                BoardViewPlayerControllers.FindAll(x => (x.Player.Color == (_selectedPiece?.Piece.Color) && x.IsPlayable));
+                BoardViewPlayerControllers.FindAll(x => x.Player.Color == _selectedPiece?.Piece.Color && x.IsPlayable);
 
         #endregion
     }

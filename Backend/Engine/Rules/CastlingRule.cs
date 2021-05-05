@@ -11,22 +11,22 @@ namespace Backend.Engine.Rules
     {
         public bool IsMoveValid(Move move, Board board)
         {
-            Square targetSquare = board.SquareAt(move.TargetCoordinate);
-            Piece piece = board.PieceAt(move.StartCoordinate);
+            var targetSquare = board.SquareAt(move.TargetCoordinate);
+            var piece = board.PieceAt(move.StartCoordinate);
 
-            if ((Math.Abs(move.TargetCoordinate.X - move.StartCoordinate.X) == 2) &&
-                (move.TargetCoordinate.Y == move.StartCoordinate.Y))
+            if (Math.Abs(move.TargetCoordinate.X - move.StartCoordinate.X) == 2 &&
+                move.TargetCoordinate.Y == move.StartCoordinate.Y)
             {
                 if (!NoPiecesBetween(move, board))
                     return false;
 
                 //Vers la droite ou la gauche ?
-                Piece possibleRook =
+                var possibleRook =
                     board.PieceAt(new Coordinate(move.TargetCoordinate.X > move.StartCoordinate.X ? 7 : 0,
                         move.StartCoordinate.Y));
-                return !piece.HasMoved && (!possibleRook?.HasMoved == true) && (possibleRook?.Type == Type.Rook);
+                return !piece.HasMoved && !possibleRook?.HasMoved == true && possibleRook?.Type == Type.Rook;
             }
-            if ((targetSquare?.Piece?.Type == Type.Rook) && (targetSquare?.Piece?.Color == piece.Color))
+            if (targetSquare?.Piece?.Type == Type.Rook && targetSquare?.Piece?.Color == piece.Color)
             {
                 if (!NoPiecesBetween(move, board))
                     return false;
@@ -47,10 +47,10 @@ namespace Backend.Engine.Rules
         private static bool NoPiecesBetween(Move move, Board board) => (move.TargetCoordinate.X > move.StartCoordinate.X
                 ? board.Squares.OfType<Square>()
                     .ToList()
-                    .FindAll(x => (x.Y == move.StartCoordinate.Y) && (x.X < 7) && (x.X > move.StartCoordinate.X))
+                    .FindAll(x => x.Y == move.StartCoordinate.Y && x.X < 7 && x.X > move.StartCoordinate.X)
                 : board.Squares.OfType<Square>()
                     .ToList()
-                    .FindAll(x => (x.Y == move.StartCoordinate.Y) && (x.X > 0) && (x.X < move.StartCoordinate.X))
+                    .FindAll(x => x.Y == move.StartCoordinate.Y && x.X > 0 && x.X < move.StartCoordinate.X)
         ).All(x => x.Piece == null);
     }
 }

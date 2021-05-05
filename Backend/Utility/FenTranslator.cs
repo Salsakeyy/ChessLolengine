@@ -9,15 +9,15 @@ namespace Backend.Utility
     {
         public static string FenNotation(Container container)
         {
-            Board board = container.Board;
+            var board = container.Board;
 
-            string result = "";
-            for (int i = 0; i < board.Size; i++)
+            var result = "";
+            for (var i = 0; i < board.Size; i++)
             {
-                int emptySquareNumber = 0;
-                for (int j = 0; j < board.Size; j++)
+                var emptySquareNumber = 0;
+                for (var j = 0; j < board.Size; j++)
                 {
-                    Square square = board.Squares[j, i];
+                    var square = board.Squares[j, i];
                     if (square.Piece != null)
                     {
                         if (emptySquareNumber != 0)
@@ -25,7 +25,7 @@ namespace Backend.Utility
                             result += emptySquareNumber;
                             emptySquareNumber = 0;
                         }
-                        char c = ' ';
+                        var c = ' ';
 
                         switch (square.Piece.Type)
                         {
@@ -76,7 +76,7 @@ namespace Backend.Utility
             Piece whiteKing = null;
 
             Square enPassant = null;
-            foreach (Square square in board.Squares)
+            foreach (var square in board.Squares)
                 if (square?.Piece?.Type == Type.King)
                     if (square.Piece.Color == Color.White)
                         whiteKing = square.Piece;
@@ -106,31 +106,31 @@ namespace Backend.Utility
                                 board.Squares[square.X, square.Piece.Color == Color.White ? square.Y + 1 : square.Y - 1];
 
             //CastlingRule
-            var bRQ = !blackRookQueen?.HasMoved == true;
-            var bRK = !blackRookKing?.HasMoved == true;
-            var wRQ = !whiteRookQueen?.HasMoved == true;
-            var wRK = !whiteRookKing?.HasMoved == true;
+            var bRq = !blackRookQueen?.HasMoved == true;
+            var bRk = !blackRookKing?.HasMoved == true;
+            var wRq = !whiteRookQueen?.HasMoved == true;
+            var wRk = !whiteRookKing?.HasMoved == true;
 
             var wK = !whiteKing.HasMoved;
             var bK = !blackKing.HasMoved;
 
             if (wK)
             {
-                if (wRK)
+                if (wRk)
                     result += 'K';
-                if (wRQ)
+                if (wRq)
                     result += 'Q';
             }
             if (bK)
             {
-                if (bRK)
+                if (bRk)
                     result += 'k';
-                if (bRQ)
+                if (bRq)
                     result += 'q';
             }
 
-            if (!(bK && (bRK || bRQ))
-                && !(wK && (wRK || wRQ)))
+            if (!(bK && (bRk || bRq))
+                && !(wK && (wRk || wRq)))
                 result += '-';
 
             result += ' ';

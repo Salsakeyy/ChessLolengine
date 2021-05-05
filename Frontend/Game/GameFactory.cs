@@ -18,10 +18,14 @@ namespace Frontend.Game
         }
 
         /// <summary>
-        /// Retourne une instance de partie dans le mode de jeu passé en paramètre
+        /// Creates the game.
         /// </summary>
-        /// <param name="mode">Mode de jeu souhaité</param>
-        /// <returns>Une partie dans le mode de jeu passé en paramètre</returns>
+        /// <param name="mode">The mode.</param>
+        /// <param name="container">The container.</param>
+        /// <param name="boardView">The board view.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The game.</returns>
         public Backend.Core.Game CreateGame(Mode mode, Container container, BoardView boardView, Color color, GameCreatorParameters parameters)
         {
             return GameCreators.FindAll(x => x.Mode == mode).First().CreateGame(container, boardView, color, parameters);
@@ -35,7 +39,7 @@ namespace Frontend.Game
     public enum Mode
     {
         Local,
-        AI,
+        Ai,
         Engine
     }
 }

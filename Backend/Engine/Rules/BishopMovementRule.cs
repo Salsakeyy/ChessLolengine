@@ -15,25 +15,25 @@ namespace Backend.Engine.Rules
         /// <inheritdoc />
         public List<Square> PossibleMoves(Piece piece)
         {
-            List<Square> diagonalUpLeft = new List<Square>();
-            List<Square> diagonalUpRight = new List<Square>();
-            List<Square> diagonalDownLeft = new List<Square>();
-            List<Square> diagonalDownRight = new List<Square>();
+            var diagonalUpLeft = new List<Square>();
+            var diagonalUpRight = new List<Square>();
+            var diagonalDownLeft = new List<Square>();
+            var diagonalDownRight = new List<Square>();
 
-            bool diagonalUpLeftEnd = false;
-            bool diagonalUpRightEnd = false;
-            bool diagonalDownLeftEnd = false;
-            bool diagonalDownRightEnd = false;
+            var diagonalUpLeftEnd = false;
+            var diagonalUpRightEnd = false;
+            var diagonalDownLeftEnd = false;
+            var diagonalDownRightEnd = false;
 
 
-            Board board = piece.Square.Board;
+            var board = piece.Square.Board;
 
-            for (int i = 1; i < 8; i++)
+            for (var i = 1; i < 8; i++)
             {
-                if ((piece.Square.X - i < 8) && (piece.Square.X - i >= 0) && (piece.Square.Y - i < 8) &&
-                    (piece.Square.Y - i >= 0) && !diagonalUpLeftEnd)
+                if (piece.Square.X - i < 8 && piece.Square.X - i >= 0 && piece.Square.Y - i < 8 &&
+                    piece.Square.Y - i >= 0 && !diagonalUpLeftEnd)
                 {
-                    Square square = board.Squares[piece.Square.X - i, piece.Square.Y - i];
+                    var square = board.Squares[piece.Square.X - i, piece.Square.Y - i];
                     diagonalUpLeft.Add(square);
                     if (square.Piece != null)
                     {
@@ -41,10 +41,10 @@ namespace Backend.Engine.Rules
                         diagonalUpLeftEnd = true;
                     }
                 }
-                if ((piece.Square.X + i < 8) && (piece.Square.X + i >= 0) && (piece.Square.Y - i < 8) &&
-                    (piece.Square.Y - i >= 0) && !diagonalUpRightEnd)
+                if (piece.Square.X + i < 8 && piece.Square.X + i >= 0 && piece.Square.Y - i < 8 &&
+                    piece.Square.Y - i >= 0 && !diagonalUpRightEnd)
                 {
-                    Square square = board.Squares[piece.Square.X + i, piece.Square.Y - i];
+                    var square = board.Squares[piece.Square.X + i, piece.Square.Y - i];
                     diagonalUpRight.Add(square);
                     if (square.Piece != null)
                     {
@@ -52,10 +52,10 @@ namespace Backend.Engine.Rules
                         diagonalUpRightEnd = true;
                     }
                 }
-                if ((piece.Square.X - i < 8) && (piece.Square.X - i >= 0) && (piece.Square.Y + i < 8) &&
-                    (piece.Square.Y + i >= 0) && !diagonalDownLeftEnd)
+                if (piece.Square.X - i < 8 && piece.Square.X - i >= 0 && piece.Square.Y + i < 8 &&
+                    piece.Square.Y + i >= 0 && !diagonalDownLeftEnd)
                 {
-                    Square square = board.Squares[piece.Square.X - i, piece.Square.Y + i];
+                    var square = board.Squares[piece.Square.X - i, piece.Square.Y + i];
                     diagonalDownLeft.Add(square);
                     if (square.Piece != null)
                     {
@@ -63,10 +63,10 @@ namespace Backend.Engine.Rules
                         diagonalDownLeftEnd = true;
                     }
                 }
-                if ((piece.Square.X + i < 8) && (piece.Square.X + i >= 0) && (piece.Square.Y + i < 8) &&
-                    (piece.Square.Y + i >= 0) && !diagonalDownRightEnd)
+                if (piece.Square.X + i < 8 && piece.Square.X + i >= 0 && piece.Square.Y + i < 8 &&
+                    piece.Square.Y + i >= 0 && !diagonalDownRightEnd)
                 {
-                    Square square = board.Squares[piece.Square.X + i, piece.Square.Y + i];
+                    var square = board.Squares[piece.Square.X + i, piece.Square.Y + i];
                     diagonalDownRight.Add(square);
                     if (square.Piece != null)
                     {
@@ -76,7 +76,7 @@ namespace Backend.Engine.Rules
                 }
             }
 
-            List<Square> possibleSquares = diagonalUpLeft.Concat(diagonalUpRight)
+            var possibleSquares = diagonalUpLeft.Concat(diagonalUpRight)
                 .Concat(diagonalDownLeft)
                 .Concat(diagonalDownRight)
                 .ToList();

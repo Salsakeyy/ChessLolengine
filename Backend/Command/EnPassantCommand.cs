@@ -16,15 +16,15 @@ namespace Backend.Command
         {
             Move = move;
 
-            bool isWhite = move.PieceColor == Color.White;
-            bool isLeft = move.StartCoordinate.X > move.TargetCoordinate.X;
+            var isWhite = move.PieceColor == Color.White;
+            var isLeft = move.StartCoordinate.X > move.TargetCoordinate.X;
 
-            int x = move.StartCoordinate.X + (isLeft ? -1 : 1);
-            int y = move.StartCoordinate.Y;
+            var x = move.StartCoordinate.X + (isLeft ? -1 : 1);
+            var y = move.StartCoordinate.Y;
 
-            Square startSquare = board.SquareAt(move.StartCoordinate);
-            Square secondSquare = board.Squares[x, y];
-            Square thirdSquare = board.Squares[x, y + (isWhite ? -1 : 1)];
+            var startSquare = board.SquareAt(move.StartCoordinate);
+            var secondSquare = board.Squares[x, y];
+            var thirdSquare = board.Squares[x, y + (isWhite ? -1 : 1)];
 
             _firstMove = new MoveCommand(new Move(startSquare, secondSquare, Move.PieceType, Move.PieceColor), board);
             _secondMove = new MoveCommand(new Move(secondSquare, thirdSquare, Move.PieceType, Move.PieceColor), board);

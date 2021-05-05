@@ -17,8 +17,8 @@ namespace Backend.Engine.States
             ruleGroup.AddGroup(new QueenRuleGroup());
             ruleGroup.AddGroup(new RookRuleGroup());
 
-            List<Square> possibleSquares = new List<Square>();
-            foreach (Square square in board.Squares.OfType<Square>().Where(x => x?.Piece?.Color == color))
+            var possibleSquares = new List<Square>();
+            foreach (var square in board.Squares.OfType<Square>().Where(x => x?.Piece?.Color == color))
                 if (square.Piece != null)
                     possibleSquares = possibleSquares.Concat(ruleGroup.PossibleMoves(square.Piece)).ToList();
             return possibleSquares.Count == 0;

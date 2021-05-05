@@ -15,7 +15,6 @@ namespace Backend.Core
         public Container Container { get; set; }
 
         private Player _currentPlayer;
-        private bool _playerMissing;
         private readonly bool _canUndoRedo;
 
         #endregion
@@ -30,7 +29,6 @@ namespace Backend.Core
         /// <param name="canUndoRedo"></param>
         public Game(IEngine engine, Player whitePlayer, Player blackPlayer, Container container, bool canUndoRedo)
         {
-            _playerMissing = false;
             _canUndoRedo = canUndoRedo;
             WhitePlayer = whitePlayer;
             BlackPlayer = blackPlayer;
@@ -57,9 +55,6 @@ namespace Backend.Core
         /// <param name="move"></param>
         private void PlayerMoveHandler(Player sender, Move move)
         {
-            //Si un joueur n'est pas là, on ne peut pas jouer (réseau)
-            if (_playerMissing) return;
-
             if (sender != _currentPlayer)
             {
                 sender.Stop();
@@ -90,7 +85,7 @@ namespace Backend.Core
         {
             if (!_canUndoRedo) return;
 
-            Move move = Engine.Undo();
+            var move = Engine.Undo();
             if (move == null) return;
 
             _currentPlayer.Stop();
@@ -105,9 +100,9 @@ namespace Backend.Core
 
             Move lastMove = null;
             _currentPlayer.Stop();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                Move move = Engine.Undo();
+                var move = Engine.Undo();
                 if (move != null)
                 {
                     ChangePlayer();
@@ -126,7 +121,7 @@ namespace Backend.Core
         {
             if (!_canUndoRedo) return;
 
-            Move move = Engine.Redo();
+            var move = Engine.Redo();
             if (move == null) return;
 
             _currentPlayer.Stop();

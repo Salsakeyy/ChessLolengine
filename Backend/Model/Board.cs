@@ -11,8 +11,8 @@ namespace Backend.Model
             Size = size;
 
             Squares = new Square[Size, Size];
-            for (int i = 0; i < Size; i++)
-                for (int j = 0; j < Size; j++)
+            for (var i = 0; i < Size; i++)
+                for (var j = 0; j < Size; j++)
                     Squares[i, j] = new Square(this, i, j);
 
             EightByEightInit();
@@ -28,10 +28,10 @@ namespace Backend.Model
             Size = board.Size;
 
             Squares = new Square[Size, Size];
-            for (int i = 0; i < Size; i++)
-                for (int j = 0; j < Size; j++)
+            for (var i = 0; i < Size; i++)
+                for (var j = 0; j < Size; j++)
                 {
-                    Square square = new Square(this, i, j);
+                    var square = new Square(this, i, j);
                     square.Piece = board.Squares[i, j]?.Piece?.Clone(square);
                     Squares[i, j] = square;
                 }
@@ -61,7 +61,7 @@ namespace Backend.Model
         private void EightByEightInit()
         {
             //Pions noirs
-            for (int i = 0; i < Size; i++)
+            for (var i = 0; i < Size; i++)
                 Squares[i, 1].Piece = new Pawn(Color.Black, Squares[i, 1]);
 
             Squares[0, 0].Piece = new Rook(Color.Black, Squares[0, 0]);
@@ -74,7 +74,7 @@ namespace Backend.Model
             Squares[7, 0].Piece = new Rook(Color.Black, Squares[7, 0]);
 
             //Pions blancs
-            for (int i = 0; i < Size; i++)
+            for (var i = 0; i < Size; i++)
                 Squares[i, 6].Piece = new Pawn(Color.White, Squares[i, 6]);
 
             Squares[0, 7].Piece = new Rook(Color.White, Squares[0, 7]);

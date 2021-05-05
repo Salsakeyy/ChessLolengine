@@ -20,11 +20,11 @@ namespace Frontend.View
             InitializeComponent();
             _mainWindow = mainWindow;
             _container = container;
-            for (int i = 1; i <= 20; i++)
+            for (var i = 1; i <= 20; i++)
             {
                 ComboBoxLevel.Items.Add(new ComboBoxItem().Content = i);
             }
-            for (int i = 0; i <= 42; i++)
+            for (var i = 0; i <= 42; i++)
             {
                 ComboBoxValue.Items.Add(new ComboBoxItem().Content = i);
             }
@@ -36,12 +36,12 @@ namespace Frontend.View
         private void ComboBoxSearchMode_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded) return;
-            int selectedIndex = ComboBoxSearchMode.SelectedIndex;
+            var selectedIndex = ComboBoxSearchMode.SelectedIndex;
 
             if (selectedIndex == 0)
             {
                 ComboBoxValue.Items.Clear();
-                for (int i = 0; i <= 42; i++)
+                for (var i = 0; i <= 42; i++)
                 {
                     ComboBoxValue.Items.Add(new ComboBoxItem().Content = i);
                 }
@@ -50,7 +50,7 @@ namespace Frontend.View
             else
             {
                 ComboBoxValue.Items.Clear();
-                for (int i = 500; i <= 5000; i+=500)
+                for (var i = 500; i <= 5000; i+=500)
                 {
                     ComboBoxValue.Items.Add(new ComboBoxItem().Content = i);
                 }
@@ -65,7 +65,7 @@ namespace Frontend.View
             var boardView = new BoardView(_container);
             var skillLevel = ComboBoxLevel.SelectedValue as int? ?? 0;
             var searchValue = ComboBoxValue.SelectedValue as int? ?? 0;
-            Backend.Core.Game game = gameFactory.CreateGame(Mode.AI, _container, boardView, Color.White, new GameCreatorParameters()
+            var game = gameFactory.CreateGame(Mode.Ai, _container, boardView, Color.White, new GameCreatorParameters()
             {
                 AiSearchType = ComboBoxSearchMode.SelectedIndex == 0 ? "depth" : "movetime",
                 AiSearchValue = searchValue,
